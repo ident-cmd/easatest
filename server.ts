@@ -1,5 +1,4 @@
 import express from "express";
-import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
 import Stripe from "stripe";
@@ -641,6 +640,7 @@ async function startServer() {
   console.log(`Environment: ${process.env.NODE_ENV}`);
   if (process.env.NODE_ENV !== "production") {
     console.log("Starting Vite in middleware mode...");
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { 
         middlewareMode: true,
@@ -670,9 +670,11 @@ if (!process.env.VERCEL) {
 }
 
 // --- CONFIGURATION SPÉCIALE VERCEL ---
-const appPromise = startServer();
+let appInstance: any = null;
 
 export default async function (req: any, res: any) {
-  const app = await appPromise;
-  return app(req, res);
+  if (!appInstance) {
+    appInstance = await startServer();
+  }
+  return appInstance(req, res);
 }
