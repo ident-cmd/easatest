@@ -660,9 +660,19 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
+if (!process.env.VERCEL) {
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  }
+  
+  return app;
 }
 
-startServer();
+// --- CONFIGURATION SPÉCIALE VERCEL ---
+const appPromise = startServer();
+
+export default async function (req: any, res: any) {
+  const app = await appPromise;
+  return app(req, res);
+}
