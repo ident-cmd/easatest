@@ -1,0 +1,5 @@
+{
+  "name": "EASA Assist",
+  "description": "Expert assistant for EASA aviation regulations (Part-CAT, Part-FCL). Provides bilingual support, regulatory watch, and compliance assistance for pilots and operators.",
+  "requestFramePermissions": []
+}

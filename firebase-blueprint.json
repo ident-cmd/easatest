@@ -1,0 +1,66 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and preferences",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "language": { "type": "string", "enum": ["fr", "en"] },
+        "notificationsEnabled": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "trialStartDate": { "type": "string", "format": "date-time" },
+        "subscriptionStatus": { "type": "string", "enum": ["trial", "active", "cancelled", "expired"] },
+        "stripeCustomerId": { "type": "string" },
+        "stripeSubscriptionId": { "type": "string" },
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "address": { "type": "string" },
+        "zipCode": { "type": "string" },
+        "city": { "type": "string" },
+        "country": { "type": "string" }
+      },
+      "required": ["email", "language", "subscriptionStatus"]
+    },
+    "RegulatoryUpdate": {
+      "title": "Regulatory Update",
+      "description": "Log of changes in EASA regulations",
+      "type": "object",
+      "properties": {
+        "part": { "type": "string", "enum": ["Part-CAT", "Part-FCL"] },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "reference": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" }
+      },
+      "required": ["part", "title", "date"]
+    },
+    "SMTPSettings": {
+      "title": "SMTP Settings",
+      "description": "Configuration for email delivery",
+      "type": "object",
+      "properties": {
+        "host": { "type": "string" },
+        "port": { "type": "number" },
+        "user": { "type": "string" },
+        "pass": { "type": "string" },
+        "from": { "type": "string" }
+      },
+      "required": ["host", "port", "user", "pass", "from"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/regulatory_updates/{updateId}": {
+      "schema": "RegulatoryUpdate",
+      "description": "History of regulatory changes"
+    },
+    "/settings/smtp": {
+      "schema": "SMTPSettings",
+      "description": "Global SMTP configuration"
+    }
+  }
+}
